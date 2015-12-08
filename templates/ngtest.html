@@ -2,9 +2,42 @@
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 <body>
 
-<div ng-app="">
-<p>My first expression: {{ 5 + 5 }}</p>
+<div ng-app="app" ng-controller="customerCtrl">
+  <ul>
+    <li ng-repeat="x in xs">
+      {% raw %}
+      {{ x.name + ', ' + x.country }}
+      {% endraw %}
+    </li>
+  </ul>
+
+  <ul>
+    <li ng-repeat="x in names">
+      {% raw %}
+      {{ x.Name + ', ' + x.Country }}
+      {% endraw %}
+    </li>
+  </ul>
 </div>
+
+<script>
+var app = angular.module('app', []);
+
+/*app.config(function($interpolateProvider) {
+  $interpolateProvider.startSymbol('##');
+  $interpolateProvider.endSymbol('##');
+});*/
+
+app.controller('customerCtrl', function($scope, $http) {
+  $http.
+  get("http://www.w3schools.com/angular/customers.php").
+  then(function(response) { $scope.names = response.data.records; });
+
+$scope.xs = [
+  {name: 'A', country: 'AA'},
+  {name: 'B', country: 'BB'}];
+});
+</script>
 
 </body>
 </html>
