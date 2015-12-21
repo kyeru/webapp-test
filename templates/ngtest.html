@@ -1,5 +1,9 @@
 <html>
+<head>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+</head>
+
 <body>
 
 <div ng-app="app" ng-controller="customerCtrl">
@@ -14,10 +18,19 @@
   <ul>
     <li ng-repeat="x in names">
       {% raw %}
-      {{ x.Name + ', ' + x.Country }}
+      {{ $index + 1 }} {{ x.Name + ', ' + x.Country }}
       {% endraw %}
     </li>
   </ul>
+
+  <table>
+    <tr ng-repeat="x in names2">
+      {% raw %}
+      <td>{{ x.Name }}</td>
+      <td>{{ x.Country }}</td>
+      {% endraw %}
+    </tr>
+  </table>
 </div>
 
 <script>
@@ -28,15 +41,21 @@ var app = angular.module('app', []);
   $interpolateProvider.endSymbol('##');
 });*/
 
-app.controller('customerCtrl', function($scope, $http) {
+appCtrl = function($scope, $http) {
   $http.
   get("http://www.w3schools.com/angular/customers.php").
   then(function(response) { $scope.names = response.data.records; });
 
-$scope.xs = [
-  {name: 'A', country: 'AA'},
-  {name: 'B', country: 'BB'}];
-});
+  $http.
+  get("http://www.w3schools.com/angular/customers_mysql.php").
+  then(function(response) { $scope.names2 = response.data.records; });
+
+  $scope.xs = [
+    {name: 'A', country: 'AA'},
+    {name: 'B', country: 'BB'}];
+};
+
+app.controller('customerCtrl', appCtrl);
 </script>
 
 </body>
