@@ -4,11 +4,32 @@
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 </head>
 
-<body>
+<body data-ng-app="app" data-ng-controller="myCtrl">
 
-<div ng-app="app" ng-controller="customerCtrl">
+<h3>Users</h3>
+
+<table class="table table-striped">
+  <th><tr>
+    <th>Edit</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+  </tr></th>
+  <tb><tr data-ng-repeat="user in users">
+    <td>
+      <button class="btn" data-ng-click="editUser(user.id)">
+        <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit
+      </button>
+    </td>
+    <td>{% raw %}{{ user.fName }}{% endraw %}</td>
+    <td>{% raw %}{{ user.lName }}{% endraw %}</td>
+  </tr></tb>
+</table>
+
+<br><br>
+
+<div>
   <ul>
-    <li ng-repeat="x in xs">
+    <li data-ng-repeat="x in xs">
       {% raw %}
       {{ x.name + ', ' + x.country }}
       {% endraw %}
@@ -16,7 +37,7 @@
   </ul>
 
   <ul>
-    <li ng-repeat="x in names">
+    <li data-ng-repeat="x in names">
       {% raw %}
       {{ $index + 1 }} {{ x.Name + ', ' + x.Country }}
       {% endraw %}
@@ -24,22 +45,25 @@
   </ul>
 
   <table>
-    <tr ng-repeat="x in names2">
+    <tr data-ng-repeat="x in names2">
       {% raw %}
       <td>{{ x.Name }}</td>
       <td>{{ x.Country }}</td>
       {% endraw %}
     </tr>
   </table>
+
 </div>
 
 <script>
 var app = angular.module('app', []);
 
-/*app.config(function($interpolateProvider) {
+/*
+app.config(function($interpolateProvider) {
   $interpolateProvider.startSymbol('##');
   $interpolateProvider.endSymbol('##');
-});*/
+});
+*/
 
 appCtrl = function($scope, $http) {
   $http.
@@ -53,10 +77,15 @@ appCtrl = function($scope, $http) {
   $scope.xs = [
     {name: 'A', country: 'AA'},
     {name: 'B', country: 'BB'}];
+
+  $scope.users = [
+    {fName: 'John', lName:'Doe'},
+    {fName: 'Jim', lName: 'Layner'}];
 };
 
-app.controller('customerCtrl', appCtrl);
+app.controller('myCtrl', appCtrl);
 </script>
 
 </body>
+
 </html>
